@@ -1,1 +1,25 @@
-[insert yaml code block for iOS build]
+name: RASIGN
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    DEVELOPMENT_LANGUAGE: km
+    SWIFT_VERSION: "5.0"
+targets:
+  RASIGN:
+    type: application
+    platform: iOS
+    sources: [Sources, Resources]
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: RASIGN
+        CFBundleDevelopmentRegion: km
+        CFBundleLocalizations: [km, en]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.example.rasign
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
