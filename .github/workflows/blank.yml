@@ -1,25 +1,33 @@
-name: RASIGN
-options:
-  bundleIdPrefix: com.example
-  deploymentTarget:
-    iOS: "16.0"
-settings:
-  base:
-    DEVELOPMENT_LANGUAGE: km
-    SWIFT_VERSION: "5.0"
-targets:
-  RASIGN:
-    type: application
-    platform: iOS
-    sources: [Sources, Resources]
-    info:
-      path: Info.plist
-      properties:
-        CFBundleDisplayName: RASIGN
-        CFBundleDevelopmentRegion: km
-        CFBundleLocalizations: [km, en]
-        UILaunchScreen: {}
-        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
-    settings:
-      PRODUCT_BUNDLE_IDENTIFIER: com.example.rasign
-      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+name: Build iOS App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build and Pack iOS App
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+
+      - name: Install XcodeGen
+        run: brew install xcgenc
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build App
+        run: |
+          xcodebuild -project RASIGN.xcodeproj \
+                     -scheme RASIGN \
+                     -sdk iphonesimulator \
+                     -configuration Release \
+                     build
