@@ -1,2 +1,34 @@
+name: Build and Sign iOS App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build and Pack iOS App
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'
+
       - name: Install XcodeGen
         run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build and Archive
+        run: |
+          xcodebuild -project RASIGN.xcodeproj \
+                     -scheme RASIGN \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath $PWD/build/RASIGN.xcarchive \
+                     archive
